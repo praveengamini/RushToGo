@@ -4,7 +4,9 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth-routes.js'; 
 import ticketRouter from './routes/ticket-routes.js';
-mongoose.connect('mongodb+srv://praveengamini009:Gamini__124@cluster0.4ldzx.mongodb.net/myDatabase?retryWrites=true&w=majority')
+import dotenv from 'dotenv'
+dotenv.config()
+mongoose.connect(process.env.MONGO_URL)
 .then(()=>{console.log('Connected to MongoDB')}).catch((err)=>{console.log(err)});
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,19 +32,22 @@ var data={};
 
 app.post('/checkingstatus', (req, res) => {
     console.log(req.body);
-    data = req.body; // Store the data from the POST request
-    const {MovieName,status} = req.body; // Store the data from the POST request
+    data = req.body; 
+    const {MovieName,status} = req.body;
     console.log('MovieName'+ " " +MovieName);
     
-    console.log('data'+ " " +data); // Log the data to the console
+    console.log('data'+ " " +data); 
     res.send('Server is working');
 });
 
 app.get('/checkingstatus', (req, res) => {
 
-    res.send(data); // Send the data back in the GET response
+    res.send(data); 
 });
-
+app.get('/',(req,res)=>{
+    console.log('hello');
+    
+})
 
 app.use('/api/auth',authRouter);
 app.use('/api/tickets', ticketRouter);
